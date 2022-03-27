@@ -5,17 +5,20 @@ from pathlib import Path
 
 def sorted_alphanumeric(data):
     convert = lambda text: int(text) if text.isdigit() else text.lower()
-    alphanum_key = lambda key: [ convert(c) for c in re.split('([0-9]+)', key) ]
+    alphanum_key = lambda key: [convert(c) for c in re.split('([0-9]+)', key)]
     return sorted(data, key=alphanum_key)
 
-def list_files(my_directory, output_name):
+def list_files(my_directory, output_name,control=0):
     my_path = Path(my_directory)
     list_files = sorted_alphanumeric(os.listdir(my_path))
     my_len_list = len(list_files)
     file_interest_list = []
     for i in range(0,my_len_list):
         file_path = my_path/list_files[i]
-        file_interest_list = file_interest_list + [file_path.stem]
+        if control == 0:
+            file_interest_list = file_interest_list + [file_path.stem]
+        elif control == 1:
+            file_interest_list = file_interest_list + [file_path.name]
     wb = openpyxl.Workbook()
     sheet = wb['Sheet']
     length_list = len(file_interest_list)
